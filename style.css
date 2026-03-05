@@ -1,0 +1,246 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header{
+  height: 100dvh;
+  background-position: center;
+  background-size: cover;
+  background-blend-mode: overlay;
+  background-color: rgba(0, 0, 0, 0.158);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 0;
+  padding: 0 2dvw;
+  animation: imageChange 20s infinite alternate step-end;
+}
+
+@keyframes imageChange {
+  0% {
+    background-image: url('/Images/Hero-Image.webp');
+  }
+  25% {
+    background-image: url('/Images/Hero-Image2.jpg');
+  }
+  50% {
+    background-image: url('/Images/Hero-Image3.png');
+  }
+  75% {
+    background-image: url('/Images/Hero-Image4.webp');
+  }
+  100% {
+    background-image: url('/Images/Hero-Image.webp');
+  }
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.5dvh 2dvw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 56, 0.226);
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.192);
+  z-index: 100;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2dvw;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.nav-links a:hover {
+  color: orange;
+  transition: all 0.3s ease-in-out;
+}
+
+.logo {
+  width: 180px;
+  cursor: pointer;
+}
+
+.icon{
+  display: none;
+  cursor: pointer;
+}
+
+.brand {
+  background-color: white;
+  padding: 3px 10px;
+  width: fit-content;
+  border-radius: 20px;
+  border: 2px solid rgb(0, 0, 56);
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.search input {
+  padding: 1dvh 1dvw;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border: 2px solid orange;
+  background-color: transparent;
+  outline: none;
+}
+
+.search input::placeholder{
+  color: white;
+  font-weight: bold;
+}
+
+.search button {
+  padding: 0.6dvh 0.7dvw;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border: 2px solid orange;
+  background-color: orange;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-title {
+  color: white;
+  font-size: 4.2rem;
+  text-align: center;
+  margin-top: 40dvh;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  font-family: 'Baloo 2', cursive;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+  line-height: 0.9;
+}
+
+main {
+  padding: 4dvh 2dvw;
+  font-family: Inter;
+}
+
+.recipe-image-container {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+}
+
+.recipe-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 1dvh;
+  width: 300px;
+}
+
+#featured-recipes {
+  display: flex;
+  gap: 2dvw;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.overlay{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn {
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.modal-box {
+  background-color: white;
+  padding: 2dvh 2dvw;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 33dvw;
+  position: relative;
+  height: 70dvh;
+  overflow-y: auto;
+}
+
+.modal-box p {
+  margin-bottom: 1dvh;
+}
+
+.label {
+  font-weight: bold;
+  color: black;
+}
+
+.filter-by-categories, .filter-by-region {
+  display: none;
+  justify-content: space-between;
+  margin-bottom: 2dvh;
+}
+
+@media (max-width: 900px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    gap: 1dvh;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 1dvh 2dvw;
+    border-radius: 5px;
+  }
+
+  .brand{
+    padding: 2px 8px;
+    border-radius: 15px;
+  }
+
+  .icon {
+    display: block;
+    width: 50px;
+  }
+
+  .logo {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-title {
+    font-size: 2.5rem;
+    margin-top: 10dvh;
+  }
+
+  .modal-box {
+    width: 90%;
+    max-width: none;
+  }
+}
