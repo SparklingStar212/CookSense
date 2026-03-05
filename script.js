@@ -160,7 +160,10 @@ mainCourse.addEventListener('click', () => {
   getMainCourseFoods();
 });
 
-// dessert.addEventListener('click', () => {
+
+
+
+
 //   const dessertEndpoint = "https://mongotest2026.vercel.app/api/foods/category/main%20course";
 
 //   async function getDesertFoods() {
