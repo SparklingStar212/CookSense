@@ -4,6 +4,10 @@ const veganFood = [];
 const mainCourseFood = [];
 const desertFood = [];
 const soupFood = [];
+const northernFood = [];
+const southWestFood = [];
+const southEastFood = [];
+const southSouthFood = [];
 
 
 const imageMap = {
@@ -59,7 +63,7 @@ const getInfo = async () => {
     if (newResponse.data) {
       newResponse.data.map((food, i) => {
         featuredRecipesContainer.innerHTML += `
-        <div class="recipe-card" onclick="showDetails(${i})";>
+        <div class="recipe-card" onclick="showDetails(${food.id})";>
           <div class="recipe-image-container" style="background-image: url('${food.image}');"></div>
           <h3>${food.name}</h3>
           <p>${food.description}</p>
@@ -81,9 +85,9 @@ const getInfo = async () => {
 getInfo();
 const modalOverlay = document.getElementById('modalOverlay')
 
-const showDetails = (i) => {
+const showDetails = (foodId) => {
+  const food = allFood.find(f => f.id === foodId);
   modalOverlay.style.display = "flex";
-  const food = allFood[i];
   modalOverlay.innerHTML = `
       <div class="modal-box">
         <div class="close-btn" onclick="modalOverlay.style.display = 'none';">
@@ -96,11 +100,30 @@ const showDetails = (i) => {
         <p><span class="label">Cooking Difficulty</span> : ${food.difficulty}</p>
         <p><span class="label">Ingredients</span> : ${food.ingredients.map(ing => `<span class="ingredient">${ing}</span>`).join(', ')}</p>
         <p><span class="label">Category</span> : ${food.category}</p>
-        <p><span class="label">Region</span> : ${food.region}</p>
-        <p><span class="label">Price</span> : ₦${food.price}</p>
+        <p class="p-with-icon"><img src="/Icons/money-icon-orange.svg" alt="Price" width="20"> ₦${food.price}</p>
         <p><span class="label">Calories</span> : ${food.calories}</p>
+        <div class="below-buttons">
+          <button>${food.region}</button>
+          <button id="is-vegan">Vegan</button>
+          <button id="is-spicy">Spicy</button>
+        </div>
       </div>
   `
+
+  const veganBtn = document.getElementById('is-vegan');
+  const spicyBtn = document.getElementById('is-spicy');
+
+  if (food.isVegetarian === true) {
+    veganBtn.style.display = "block";
+  } else {
+    veganBtn.style.display = "none";
+  }
+
+  if (food.isSpicy === true) {
+    spicyBtn.style.display = "block";
+  } else {
+    spicyBtn.style.display = "none";
+  }
 }
 
 const categories = document.getElementById('categories-btn');
@@ -110,21 +133,28 @@ const spicy = document.getElementById('spicy-btn');
 
 
 const mainCourse = document.getElementById('mainCourse-btn');
-// const dessert = document.getElementById('dessert-btn')
-// const appetizer = document.getElementById('appetizer-btn');
 const soup = document.getElementById('soup-btn');
-//const sideDish = document.getElementById('side-dish-btn')
-// const breakFast = document.getElementById('breakfast-btn');
 const swallow = document.getElementById('swallow-btn');
-//const snack = document.getElementById('snack-btn');
+const snack = document.getElementById('snack-btn');
+const filterByCategories = document.querySelector('.filter-by-categories');
+const filterByRegion = document.querySelector('.filter-by-region');
 
+
+const setActiveFilterButton = (element) => {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('filter-buttons-active');
+  });
+  element.classList.add('filter-buttons-active');
+}
 
 categories.addEventListener('click', () => {
-  const filterByCategories = document.querySelector('.filter-by-categories');
+  setActiveFilterButton(categories);
   filterByCategories.style.display = filterByCategories.style.display === 'flex' ? 'none' : 'flex';
+  document.querySelector('.filter-by-region').style.display = 'none';
 });
 
 mainCourse.addEventListener('click', () => {
+  setActiveFilterButton(mainCourse);
   const mainCourseEndpoint = "https://mongotest2026.vercel.app/api/foods/category/main%20course";
 
   async function getMainCourseFoods() {
@@ -143,9 +173,9 @@ mainCourse.addEventListener('click', () => {
 
       featuredRecipesContainer.innerHTML = '';
 
-      newResponse.data.map((food, i) => {
+      newResponse.data.map((food) => {
         featuredRecipesContainer.innerHTML += `
-        <div class="recipe-card" onclick="showDetails(${i})";>
+        <div class="recipe-card" onclick="showDetails(${food.id})";>
           <div class="recipe-image-container" style="background-image: url('${food.image}');"></div>
           <h3>${food.name}</h3>
           <p>${food.description}</p>
@@ -160,46 +190,8 @@ mainCourse.addEventListener('click', () => {
   getMainCourseFoods();
 });
 
-
-
-
-
-//   const dessertEndpoint = "https://mongotest2026.vercel.app/api/foods/category/main%20course";
-
-//   async function getDesertFoods() {
-//     try {
-//       const response = await fetch(dessertEndpoint);
-//       const newResponse = await response.json();
-//       console.log(newResponse);
-
-//       newResponse.data.forEach(food => {
-//         if (imageMap[food.id]) {
-//           food.image = imageMap[food.id];
-//         }
-//       });
-
-//       desertFood.push(...newResponse.data);
-
-//       featuredRecipesContainer.innerHTML = '';
-
-//       newResponse.data.map((food, i) => {
-//         featuredRecipesContainer.innerHTML += `
-//         <div class="recipe-card" onclick="showDetails(${i})";>
-//           <div class="recipe-image-container" style="background-image: url('${food.image}');"></div>
-//           <h3>${food.name}</h3>
-//           <p>${food.description}</p>
-//         </div>
-//       `;
-//       });
-//     } catch (error) {
-//       console.error("Error fetching main course food data:", error);
-//     }
-//   }
-
-//   getDesertFoods();
-// });
-
 soup.addEventListener('click', () => {
+  setActiveFilterButton(soup);
   const soupEndpoint = "https://mongotest2026.vercel.app/api/foods/category/soup";
 
 
@@ -217,9 +209,9 @@ soup.addEventListener('click', () => {
 
       soupFood.push(...newResponse.data);
       featuredRecipesContainer.innerHTML = '';
-      newResponse.data.map((food, i) => {
+      newResponse.data.map((food) => {
         featuredRecipesContainer.innerHTML += `
-        <div class="recipe-card" onclick="showDetails(${i})";>
+        <div class="recipe-card" onclick="showDetails(${food.id})";>
           <div class="recipe-image-container" style="background-image: url('${food.image}');"></div>
           <h3>${food.name}</h3>
           <p>${food.description}</p>
@@ -235,6 +227,7 @@ soup.addEventListener('click', () => {
 });
 
 swallow.addEventListener('click', () => {
+  setActiveFilterButton(swallow);
   const swallowEndpoint = "https://mongotest2026.vercel.app/api/foods/category/swallow";
 
   async function getSwallowFoods() {
@@ -251,9 +244,9 @@ swallow.addEventListener('click', () => {
 
       featuredRecipesContainer.innerHTML = '';
 
-      newResponse.data.map((food, i) => {
+      newResponse.data.map((food) => {
         featuredRecipesContainer.innerHTML += `
-        <div class="recipe-card" onclick="showDetails(${i})";>
+        <div class="recipe-card" onclick="showDetails(${food.id})";>
           <div class="recipe-image-container" style="background-image: url('${food.image}');"></div>
           <h3>${food.name}</h3>
           <p>${food.description}</p>
@@ -268,22 +261,226 @@ swallow.addEventListener('click', () => {
   getSwallowFoods();
 });
 
+snack.addEventListener('click', () => {
+  setActiveFilterButton(snack);
+  let filteredFoods = allFood;
+  filteredFoods = allFood.filter(food =>
+    food.category.toLowerCase().includes('snack') ||
+    food.category.toLowerCase().includes('breakfast')
+  )
+  console.log(filteredFoods);
+
+  featuredRecipesContainer.innerHTML = '';
+  filteredFoods.map((food) => {
+    featuredRecipesContainer.innerHTML += `
+    <div class="recipe-card" onclick="showDetails(${food.id})";>
+      <div class="recipe-image-container" style="background-image: url('${food.image}');"></div>
+      <h3>${food.name}</h3>
+      <p>${food.description}</p>
+    </div>
+  `;
+  });
+})
+
 
 
 
 const allRegions = document.getElementById('all-region-btn')
 const northern = document.getElementById('northern-nigeria-btn')
+const southWest = document.getElementById('south-west-nigeria-btn')
+const southEast = document.getElementById('south-east-nigeria-btn')
+const southSouth = document.getElementById('south-south-nigeria-btn')
 
 
 
 regions.addEventListener('click', () => {
+  setActiveFilterButton(regions);
   const filterByRegion = document.querySelector('.filter-by-region');
   filterByRegion.style.display = filterByRegion.style.display === 'flex' ? 'none' : 'flex';
+  document.querySelector('.filter-by-categories').style.display = 'none';
+});
+
+allRegions.addEventListener('click', () => {
+  setActiveFilterButton(allRegions);
+  const allRegionsEndpoint = "https://mongotest2026.vercel.app/api/foods/region/all%20region";
+
+  async function getAllRegionFoods() {
+    try {
+      const response = await fetch(allRegionsEndpoint);
+      const newResponse = await response.json();
+      console.log(newResponse);
+      newResponse.data.forEach(food => {
+        if (imageMap[food.id]) {
+          food.image = imageMap[food.id];
+        }
+      });
+
+      allFood.push(...newResponse.data);
+
+      featuredRecipesContainer.innerHTML = '';
+
+      newResponse.data.map((food) => {
+        featuredRecipesContainer.innerHTML += `
+        <div class="recipe-card" onclick="showDetails(${food.id})";>
+          <div class="recipe-image-container" style="background-image: url('${food.image}');"></div>
+          <h3>${food.name}</h3>
+          <p>${food.description}</p>
+        </div>
+      `;
+      });
+    } catch (error) {
+      console.error("Error fetching all region food data:", error);
+    }
+  }
+
+  getAllRegionFoods();
+});
+
+northern.addEventListener('click', () => {
+  setActiveFilterButton(northern);
+  const northernEndpoint = "https://mongotest2026.vercel.app/api/foods/region/northern%20Nigeria";
+
+  async function getNorthernFoods() {
+    try {
+      const response = await fetch(northernEndpoint);
+      const newResponse = await response.json();
+      console.log(newResponse);
+
+      newResponse.data.forEach(food => {
+        if (imageMap[food.id]) {
+          food.image = imageMap[food.id];
+        }
+      });
+
+      northernFood.push(...newResponse.data);
+
+      featuredRecipesContainer.innerHTML = '';
+
+      newResponse.data.map((food) => {
+        featuredRecipesContainer.innerHTML += `
+        <div class="recipe-card" onclick="showDetails(${food.id})";>
+          <div class="recipe-image-container" style="background-image: url('${food.image}');"></div>
+          <h3>${food.name}</h3>
+          <p>${food.description}</p>
+        </div>
+      `;
+      });
+    } catch (error) {
+      console.error("Error fetching northern food data:", error);
+    }
+  }
+
+  getNorthernFoods();
+});
+
+southWest.addEventListener('click', () => {
+  setActiveFilterButton(southWest);
+  const southWestEndpoint = "https://mongotest2026.vercel.app/api/foods/region/south-west%20nigeria";
+
+  async function getSouthWestFoods() {
+    try {
+      const response = await fetch(southWestEndpoint);
+      const newResponse = await response.json();
+      console.log(newResponse);
+      newResponse.data.forEach(food => {
+        if (imageMap[food.id]) {
+          food.image = imageMap[food.id];
+        }
+      }
+      );
+      southWestFood.push(...newResponse.data);
+
+      featuredRecipesContainer.innerHTML = '';
+      newResponse.data.map((food) => {
+        featuredRecipesContainer.innerHTML += `
+        <div class="recipe-card" onclick="showDetails(${food.id})";>
+          <div class="recipe-image-container" style="background-image: url('${food.image}');"></div>
+          <h3>${food.name}</h3>
+          <p>${food.description}</p>
+        </div>
+      `;
+      });
+    } catch (error) {
+      console.error("Error fetching south west food data:", error);
+    }
+  }
+
+  getSouthWestFoods();
+});
+
+southEast.addEventListener('click', () => {
+  setActiveFilterButton(southEast);
+  const southEastEndpoint = "https://mongotest2026.vercel.app/api/foods/region/south-east%20nigeria";
+
+  async function getSouthEastFoods() {
+    try {
+      const response = await fetch(southEastEndpoint);
+      const newResponse = await response.json();
+      console.log(newResponse);
+      newResponse.data.forEach(food => {
+        if (imageMap[food.id]) {
+          food.image = imageMap[food.id];
+        }
+      });
+      southEastFood.push(...newResponse.data);
+
+      featuredRecipesContainer.innerHTML = '';
+      newResponse.data.map((food) => {
+        featuredRecipesContainer.innerHTML += `
+        <div class="recipe-card" onclick="showDetails(${food.id})";>
+          <div class="recipe-image-container" style="background-image: url('${food.image}');"></div>
+          <h3>${food.name}</h3>
+          <p>${food.description}</p>
+        </div>
+      `;
+      });
+    } catch (error) {
+      console.error("Error fetching south east food data:", error);
+    }
+  }
+
+  getSouthEastFoods();
+});
+
+southSouth.addEventListener('click', () => {
+  setActiveFilterButton(southSouth);
+  const southSouthEndpoint = "https://mongotest2026.vercel.app/api/foods/region/south-south%20nigeria";
+
+  async function getSouthSouthFoods() {
+    try {
+      const response = await fetch(southSouthEndpoint);
+      const newResponse = await response.json();
+      console.log(newResponse);
+      newResponse.data.forEach(food => {
+        if (imageMap[food.id]) {
+          food.image = imageMap[food.id];
+        }
+      });
+      featuredRecipesContainer.innerHTML = '';
+      newResponse.data.map((food) => {
+        featuredRecipesContainer.innerHTML += `
+        <div class="recipe-card" onclick="showDetails(${food.id})";>
+          <div class="recipe-image-container" style="background-image: url('${food.image}');"></div>
+          <h3>${food.name}</h3>
+          <p>${food.description}</p>
+        </div>
+      `;
+      });
+    } catch (error) {
+      console.error("Error fetching south south food data:", error);
+    }
+  }
+
+  getSouthSouthFoods();
 });
 
 
 
+
 vegetarian.addEventListener('click', () => {
+  filterByCategories.style.display = 'none';
+  filterByRegion.style.display = 'none';
+  setActiveFilterButton(vegetarian);
   const veganEndpoint = "https://mongotest2026.vercel.app/api/foods/filter/vegetarian";
 
   async function getVegetarianFoods() {
@@ -302,9 +499,9 @@ vegetarian.addEventListener('click', () => {
 
       featuredRecipesContainer.innerHTML = '';
 
-      newResponse.data.map((food, i) => {
+      newResponse.data.map((food) => {
         featuredRecipesContainer.innerHTML += `
-        <div class="recipe-card" onclick="showDetails(${i})";>
+        <div class="recipe-card" onclick="showDetails(${food.id})";>
           <div class="recipe-image-container" style="background-image: url('${food.image}');"></div>
           <h3>${food.name}</h3>
           <p>${food.description}</p>
@@ -320,6 +517,9 @@ vegetarian.addEventListener('click', () => {
 });
 
 spicy.addEventListener('click', () => {
+  setActiveFilterButton(spicy);
+  filterByCategories.style.display = 'none';
+  filterByRegion.style.display = 'none';
   const spicyEndpoint = "https://mongotest2026.vercel.app/api/foods/filter/spicy";
 
   async function getSpicyFoods() {
@@ -338,9 +538,9 @@ spicy.addEventListener('click', () => {
 
       featuredRecipesContainer.innerHTML = '';
 
-      newResponse.data.map((food, i) => {
+      newResponse.data.map((food) => {
         featuredRecipesContainer.innerHTML += `
-        <div class="recipe-card" onclick="showDetails(${i})";>
+        <div class="recipe-card" onclick="showDetails(${food.id})";>
           <div class="recipe-image-container" style="background-image: url('${food.image}');"></div>
           <h3>${food.name}</h3>
           <p>${food.description}</p>
@@ -393,4 +593,32 @@ function typeEffect() {
 
 typeEffect();
 
+const searchInput = document.getElementById('search-input');
+const searchButton = document.getElementById('search-button');
 
+searchButton.addEventListener('click', () => {
+  const query = searchInput.value.toLowerCase();
+  const filteredFoods = allFood.filter(food =>
+    food.name.toLowerCase().includes(query) ||
+    food.description.toLowerCase().includes(query) ||
+    food.ingredients.some(ing => ing.toLowerCase().includes(query)) ||
+    food.category.toLowerCase().includes(query) ||
+    food.region.toLowerCase().includes(query)
+  );
+  console.log(filteredFoods);
+  featuredRecipesContainer.innerHTML = '';
+  if (filteredFoods.length > 0) {
+    filteredFoods.map((food) => {
+      featuredRecipesContainer.innerHTML += `
+      <div class="recipe-card" onclick="showDetails(${food.id})";>
+        <div class="recipe-image-container" style="background-image: url('${food.image}');"></div>
+        <h3>${food.name}</h3>
+        <p>${food.description}</p>
+      </div>
+    `;
+    });
+  } else {
+    featuredRecipesContainer.innerHTML = `<p>No recipes found for "${query}".</p>`;
+  }
+  searchInput.value = '';
+});

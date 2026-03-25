@@ -10,6 +10,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
@@ -25,8 +28,8 @@
       <a href="#contact">Contact</a>
     </div>
     <div class="search">
-      <input type="text" placeholder="Search recipes...">
-      <button type="submit"><img src="/Icons/search-icon.svg" alt=""></button>
+      <input type="text" id="search-input" placeholder="Search recipes...">
+      <button type="submit" id="search-button"><img src="/Icons/search-icon.svg" alt=""></button>
     </div>
   </nav>
   <header>
@@ -40,30 +43,28 @@
     </section>
 
     <section class="filter-section">
-      <div>
+      <div class="filter-container">
         <p>Filter by:</p>
         <div class="filter-buttons">
-          <button id="categories-btn">Categories</button>
-          <button id="region-btn">Region</button>
-          <button id="vegetarian-btn">Vegetarian</button>
-          <button id="spicy-btn">Spicy</button>
+          <button id="categories-btn" class="filter-btn">Categories</button>
+          <button id="region-btn" class="filter-btn">Region</button>
+          <button id="vegetarian-btn" class="filter-btn">Vegetarian</button>
+          <button id="spicy-btn" class="filter-btn">Spicy</button>
         </div>
+      </div>
+      <div class="filter-options">  
         <div class="filter-by-categories">
-          <button id="mainCourse-btn">Main Course</button>
-          <button id="soup-btn">Soup</button>
-          <button id="swallow-btn">Swallow</button>
-          <button id="snack-btn">Snack/Street Food</button>
-          <button id="breakfast-btn">Breakfast/Snack</button>
-          <button id="side-dish-btn">Side Dish</button>
-          <button id="appetizer-btn">Appetizer/Side Dish</button>
-          <button id="dessert-btn">Dessert/Snack</button>
+          <button id="mainCourse-btn" class="filter-btn">Main Course</button>
+          <button id="soup-btn" class="filter-btn">Soup</button>
+          <button id="swallow-btn" class="filter-btn">Swallow</button>
+          <button id="snack-btn" class="filter-btn">Snack/Street Food</button>
         </div>
         <div class="filter-by-region">
-          <button id="all-region-btn">All Regions</button>
-          <button id="northern-nigeria-btn">Northern Nigeria</button>
-          <button id="south-west-nigeria-btn">South-west Nigeria</button>
-          <button id="south-east-nigeria-btn">South-east Nigeria</button>
-          <button id="south-south-nigeria-btn">South-south Nigeria</button>
+          <button id="all-region-btn" class="filter-btn">All Regions</button>
+          <button id="northern-nigeria-btn" class="filter-btn">Northern Nigeria</button>
+          <button id="south-west-nigeria-btn" class="filter-btn">South-west Nigeria</button>
+          <button id="south-east-nigeria-btn" class="filter-btn">South-east Nigeria</button>
+          <button id="south-south-nigeria-btn" class="filter-btn">South-south Nigeria</button>
         </div>
       </div>
     </section>
@@ -77,4 +78,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/TextPlugin.min.js"></script>
 <script src="script.js"></script>
+
 </html>
